@@ -7,7 +7,7 @@ const openai = new OpenAI({
     apiKey: process.env.OPENROUTER_API_KEY,
     baseURL: "https://openrouter.ai/api/v1",
     defaultHeaders: {
-        "HTTP-Referer": `${import.meta.env.VITE_API_URL}`,
+        "HTTP-Referer": process.env.BACKEND_BASE_URL,
         "X-Title": "DeepSeek Clone",
     },
 });
