@@ -5,6 +5,8 @@ const initialState = {
     isAuthenticated: null,
     isLoading: true,
     user: null,
+
+    //for render
 };
 
 
@@ -76,16 +78,42 @@ export const logOutUser = createAsyncThunk(
 );
 
 
+//for local and custom domain
+// export const checkAuth = createAsyncThunk(
+//     "auth/checkauth",
+//     async (_, thunkAPI) => {
+//         try {
+//             const res = await axios.get(
+//                 `${import.meta.env.VITE_API_URL}/api/user/checkauth`,
+//                 {
+//                     withCredentials: true,
+//                     headers: {
+//                         "Cache-Control": "no-store",
+//                     },
+//                 }
+//             );
+//             return res.data;
+//         } catch (error) {
+//             return thunkAPI.rejectWithValue(
+//                 error?.response?.data?.message || "Unauthorized"
+//             );
+//         }
+//     }
+// );
 
+
+//for render
 export const checkAuth = createAsyncThunk(
     "auth/checkauth",
     async (_, thunkAPI) => {
         try {
+            const token = sessionStorage.getItem("token");
+
             const res = await axios.get(
                 `${import.meta.env.VITE_API_URL}/api/user/checkauth`,
                 {
-                    withCredentials: true,
                     headers: {
+                        Authorization: `Bearer ${token}`,
                         "Cache-Control": "no-store",
                     },
                 }
@@ -98,6 +126,7 @@ export const checkAuth = createAsyncThunk(
         }
     }
 );
+
 
 
 const authSlice = createSlice({
@@ -123,6 +152,11 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.user = action.payload.success ? action.payload.checkUser : null;
                 state.isAuthenticated = action.payload.success;
+
+                //for render
+                state.token = action.payload.token;
+                sessionStorage.setItem("token", action.payload.token);
+
             })
             .addCase(loginUser.rejected, (state) => {
                 state.isLoading = false;
@@ -148,6 +182,10 @@ const authSlice = createSlice({
                 state.user = null;
                 state.isAuthenticated = false;
                 state.isLoading = false;
+
+                //for render
+                state.token = null;
+                sessionStorage.removeItem("token");
             });
     },
 });

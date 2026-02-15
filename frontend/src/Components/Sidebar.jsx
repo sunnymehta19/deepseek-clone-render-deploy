@@ -70,9 +70,15 @@ const Sidebar = ({ closeSidebar, setDeleteChatId }) => {
 
     const handleLogout = async () => {
         try {
+            // const data = await dispatch(logOutUser()).unwrap();
+            // dispatch(clearChat());
+            // navigate("/login");
+
+            //for render
             const data = await dispatch(logOutUser()).unwrap();
-            await dispatch(clearChat());
-            navigate("/login");
+            dispatch(clearChat());
+            sessionStorage.clear();
+            navigate("/");
 
         } catch (error) {
             toast.success((error?.response?.data?.errors || "Logout Failed"));
