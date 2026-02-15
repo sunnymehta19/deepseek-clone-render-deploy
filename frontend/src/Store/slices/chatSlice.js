@@ -11,10 +11,19 @@ const initialState = {
 
 export const fetchChats = createAsyncThunk(
     "chat/fetchChats",
+
     async () => {
+        //for render
+        const token = sessionStorage.getItem("token");
+
         const { data } = await axios.get(
             `${import.meta.env.VITE_API_URL}/api/deepseek/chats`,
-            { withCredentials: true }
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+            // { withCredentials: true }
         );
         return data.chats;
     }
@@ -24,8 +33,16 @@ export const fetchChats = createAsyncThunk(
 export const fetchChatMessages = createAsyncThunk(
     "chat/fetchMessages",
     async (chatId) => {
+        //for render
+        const token = sessionStorage.getItem("token");
+
         const { data } = await axios.get(
             `${import.meta.env.VITE_API_URL}/api/deepseek/chat/${chatId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
             { withCredentials: true }
         );
 
@@ -40,11 +57,18 @@ export const fetchChatMessages = createAsyncThunk(
 export const sendPrompt = createAsyncThunk(
     "chat/sendPrompt",
     async ({ content, chatId }) => {
+        //for render
+        const token = sessionStorage.getItem("token");
 
         const { data } = await axios.post(
             `${import.meta.env.VITE_API_URL}/api/deepseek/prompt`,
             { content, chatId },
-            { withCredentials: true }
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+            // { withCredentials: true }
         );
 
         return {
@@ -59,9 +83,17 @@ export const sendPrompt = createAsyncThunk(
 export const deleteChat = createAsyncThunk(
     "chat/deleteChat",
     async (chatId) => {
+        //for render
+        const token = sessionStorage.getItem("token");
+
         await axios.delete(
             `${import.meta.env.VITE_API_URL}/api/deepseek/chat/${chatId}`,
-            { withCredentials: true }
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+            // { withCredentials: true }
         );
 
         return chatId;
@@ -72,10 +104,18 @@ export const deleteChat = createAsyncThunk(
 export const renameChat = createAsyncThunk(
     "chat/renameChat",
     async ({ chatId, title }) => {
+        //for render
+        const token = sessionStorage.getItem("token");
+
         const { data } = await axios.patch(
             `${import.meta.env.VITE_API_URL}/api/deepseek/chat/${chatId}/rename`,
             { title },
-            { withCredentials: true }
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+            // { withCredentials: true }
         );
 
         return data.chat;
@@ -85,10 +125,18 @@ export const renameChat = createAsyncThunk(
 export const togglePinChat = createAsyncThunk(
     "chat/togglePin",
     async (chatId) => {
+        //for render
+        const token = sessionStorage.getItem("token");
+
         const { data } = await axios.patch(
             `${import.meta.env.VITE_API_URL}/api/deepseek/chat/${chatId}/pin`,
             {},
-            { withCredentials: true }
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+            // { withCredentials: true }
         );
 
         return data.chat;
@@ -98,10 +146,18 @@ export const togglePinChat = createAsyncThunk(
 export const shareChat = createAsyncThunk(
     "chat/shareChat",
     async (chatId) => {
+        //for render
+        const token = sessionStorage.getItem("token");
+
         const { data } = await axios.patch(
             `${import.meta.env.VITE_API_URL}/api/deepseek/chat/${chatId}/share`,
             {},
-            { withCredentials: true }
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+            // { withCredentials: true }
         );
 
         return {
