@@ -7,6 +7,7 @@ const initialState = {
     user: null,
 
     //for render
+    token: null,
 };
 
 
